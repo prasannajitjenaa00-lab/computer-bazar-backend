@@ -11,10 +11,10 @@ exports.getSettings = async (req, res, next) => {
     // Auto initialize with defaults if empty
     if (!settings) {
       settings = await ShopSettings.create({
-        shopName: 'PC Doctor',
+        shopName: 'COMPUTER BAZAAR',
         tagline: 'Computer, Laptop, CCTV & Networking Solutions',
         phone: '+91 98765 43210',
-        email: 'contact@pcdoctor.com',
+        email: 'contact@computerbazaar.com',
         address: '104 Computer Plaza, Commercial Hub',
         city: 'Metro City',
         state: 'State',

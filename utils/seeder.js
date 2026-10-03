@@ -11,17 +11,17 @@ dotenv.config({ path: __dirname + '/../.env' });
 
 const seedData = async () => {
   try {
-    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/pc_doctor');
+    await mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/computer_bazaar');
     console.log('[Seeder] Connected to database...');
 
     // 1. Seed Shop Settings if not exists
     const settingsCount = await ShopSettings.countDocuments();
     if (settingsCount === 0) {
       await ShopSettings.create({
-        shopName: 'PC Doctor Repair & Tech Solutions',
+        shopName: 'COMPUTER BAZAAR',
         tagline: 'Expert Laptop, Desktop, Printer & CCTV Repairs',
         phone: '+91 98765 43210',
-        email: 'contact@pcdoctor.com',
+        email: 'contact@computerbazaar.com',
         address: '104 Computer Plaza, Commercial Hub',
         city: 'Technology City',
         state: 'Tech State',
@@ -30,7 +30,7 @@ const seedData = async () => {
         invoicePrefix: 'INV',
         repairPrefix: 'REP',
         defaultGstRate: 18,
-        upiId: 'pcdoctor@upi'
+        upiId: 'computerbazaar@upi'
       });
       console.log('[Seeder] Default Shop Settings created.');
     }

@@ -5,7 +5,7 @@ const ExcelJS = require('exceljs');
  */
 const generateInventoryExcel = async (products = []) => {
   const workbook = new ExcelJS.Workbook();
-  workbook.creator = 'PC Doctor System';
+  workbook.creator = 'COMPUTER BAZAAR System';
   workbook.created = new Date();
 
   const worksheet = workbook.addWorksheet('Inventory Products', {

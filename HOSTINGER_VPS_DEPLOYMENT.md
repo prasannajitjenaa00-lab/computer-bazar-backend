@@ -1,6 +1,6 @@
 # 🚀 Complete Deployment Guide: Hostinger VPS (Ubuntu 22.04 / 24.04)
 
-This step-by-step guide walks you through deploying **PC Doctor** on a **Hostinger VPS** using **Node.js, Nginx, PM2, and SSL (Certbot)**.
+This step-by-step guide walks you through deploying **COMPUTER BAZAAR** on a **Hostinger VPS** using **Node.js, Nginx, PM2, and SSL (Certbot)**.
 
 ---
 
@@ -56,7 +56,7 @@ sudo ufw status
 
 ---
 
-## Step 4: Clone the PC Doctor Project
+## Step 4: Clone the COMPUTER BAZAAR Project
 We recommend putting web applications in `/var/www/`:
 
 ```bash
@@ -64,10 +64,10 @@ We recommend putting web applications in `/var/www/`:
 cd /var/www
 
 # Clone your repository
-git clone <YOUR_GIT_REPOSITORY_URL> pc-doctor
+git clone <YOUR_GIT_REPOSITORY_URL> computer-bazaar
 
 # Enter project directory
-cd pc-doctor
+cd computer-bazaar
 
 # Install all dependencies (root, server, and client)
 npm run install:all
@@ -87,8 +87,8 @@ Paste your production variables into `server/.env`:
 PORT=5000
 NODE_ENV=production
 
-# MongoDB Atlas connection string (or mongodb://127.0.0.1:27017/pc_doctor if installed locally)
-MONGODB_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/pc_doctor?retryWrites=true&w=majority
+# MongoDB Atlas connection string (or mongodb://127.0.0.1:27017/computer_bazaar if installed locally)
+MONGODB_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/computer_bazaar?retryWrites=true&w=majority
 
 # Your domain or VPS IP
 CLIENT_URL=https://yourdomain.com
@@ -135,12 +135,12 @@ pm2 startup
 Copy the provided Nginx configuration template into Nginx sites:
 
 ```bash
-sudo cp /var/www/pc-doctor/nginx.conf.example /etc/nginx/sites-available/pc-doctor
+sudo cp /var/www/computer-bazaar/nginx.conf.example /etc/nginx/sites-available/computer-bazaar
 ```
 
 Edit the file to replace `yourdomain.com` with your actual domain name or VPS IP:
 ```bash
-sudo nano /etc/nginx/sites-available/pc-doctor
+sudo nano /etc/nginx/sites-available/computer-bazaar
 ```
 Change line 12:
 ```nginx
@@ -151,7 +151,7 @@ server_name yourdomain.com www.yourdomain.com;
 Enable the site and restart Nginx:
 ```bash
 # Enable site configuration
-sudo ln -s /etc/nginx/sites-available/pc-doctor /etc/nginx/sites-enabled/
+sudo ln -s /etc/nginx/sites-available/computer-bazaar /etc/nginx/sites-enabled/
 
 # Remove default Nginx welcome page
 sudo rm -f /etc/nginx/sites-enabled/default
@@ -180,10 +180,10 @@ Follow the on-screen prompts (enter your email and agree to terms). Certbot will
 Whenever you push new code to GitHub, update your VPS with these 4 commands:
 
 ```bash
-cd /var/www/pc-doctor
+cd /var/www/computer-bazaar
 git pull origin main
 npm run build
-pm2 reload pc-doctor
+pm2 reload computer-bazaar
 ```
 
 ---
@@ -191,8 +191,8 @@ pm2 reload pc-doctor
 ## 🛠️ Helpful Troubleshooting Commands
 | Task | Command |
 | :--- | :--- |
-| View live backend logs | `pm2 logs pc-doctor` |
-| Restart backend server | `pm2 restart pc-doctor` |
+| View live backend logs | `pm2 logs computer-bazaar` |
+| Restart backend server | `pm2 restart computer-bazaar` |
 | View CPU / RAM usage | `pm2 monit` |
 | Test Nginx config | `sudo nginx -t` |
 | View Nginx error logs | `sudo tail -f /var/log/nginx/error.log` |

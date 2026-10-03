@@ -1,5 +1,5 @@
 /**
- * PC Doctor Standard Preset Service Checklists
+ * COMPUTER BAZAAR Standard Preset Service Checklists
  * Automatically loaded when a service is selected during repair job intake
  */
 const REPAIR_TEMPLATES = {

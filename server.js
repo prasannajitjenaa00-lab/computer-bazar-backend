@@ -57,7 +57,7 @@ app.get('/api/health', (req, res) => {
   const mongoose = require('mongoose');
   res.status(200).json({
     status: 'online',
-    system: 'PC Doctor - Billing, Inventory & Repair Management System',
+    system: 'COMPUTER BAZAAR - Billing, Inventory & Repair Management System',
     timestamp: new Date().toISOString(),
     mongoState: mongoose.connection.readyState,
     mongoHost: mongoose.connection.host || 'none'
@@ -98,7 +98,7 @@ if (process.env.NODE_ENV === 'production') {
 app.use('*', (req, res) => {
   res.status(404).json({
     success: false,
-    message: `API endpoint '${req.originalUrl}' not found on PC Doctor Server`
+    message: `API endpoint '${req.originalUrl}' not found on COMPUTER BAZAAR Server`
   });
 });
 
@@ -109,7 +109,7 @@ const PORT = process.env.PORT || 5000;
 
 const server = app.listen(PORT, () => {
   console.log(`=======================================================`);
-  console.log(`🚀 PC Doctor API Server running on port ${PORT}`);
+  console.log(`🚀 COMPUTER BAZAAR API Server running on port ${PORT}`);
   console.log(`🌐 Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`📡 Health Check: http://localhost:${PORT}/api/health`);
   console.log(`=======================================================`);

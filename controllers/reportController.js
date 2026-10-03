@@ -229,7 +229,7 @@ exports.exportInventoryExcel = async (req, res, next) => {
     const buffer = await generateInventoryExcel(products);
 
     res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    res.setHeader('Content-Disposition', 'attachment; filename="PC-Doctor-Inventory.xlsx"');
+    res.setHeader('Content-Disposition', 'attachment; filename="Computer-Bazaar-Inventory.xlsx"');
     res.setHeader('Content-Length', buffer.length);
 
     return res.end(buffer);
@@ -260,7 +260,7 @@ exports.exportSalesExcel = async (req, res, next) => {
     const buffer = await generateSalesReportExcel(bills);
 
     res.setHeader('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-    res.setHeader('Content-Disposition', 'attachment; filename="PC-Doctor-Sales-Report.xlsx"');
+    res.setHeader('Content-Disposition', 'attachment; filename="Computer-Bazaar-Sales-Report.xlsx"');
     res.setHeader('Content-Length', buffer.length);
 
     return res.end(buffer);

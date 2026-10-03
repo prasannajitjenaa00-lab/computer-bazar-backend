@@ -1,7 +1,7 @@
 # ==============================================================================
-# PC Doctor - Nginx Configuration Template for Hostinger VPS (Ubuntu/Debian)
-# Place this file in: /etc/nginx/sites-available/pc-doctor
-# Then link it to:    /etc/nginx/sites-enabled/pc-doctor
+# COMPUTER BAZAAR - Nginx Configuration Template for Hostinger VPS (Ubuntu/Debian)
+# Place this file in: /etc/nginx/sites-available/computer-bazaar
+# Then link it to:    /etc/nginx/sites-enabled/computer-bazaar
 # ==============================================================================
 
 server {
@@ -25,7 +25,7 @@ server {
     # 1. React SPA Frontend Static Files
     # --------------------------------------------------------------------------
     location / {
-        root /var/www/pc-doctor/client/dist;
+        root /var/www/computer-bazaar/client/dist;
         index index.html;
         # Support React Router HTML5 History Mode
         try_files $uri $uri/ /index.html;
@@ -59,7 +59,7 @@ server {
     # 3. Direct Static Serving for Uploaded Photos and Shop Logos
     # --------------------------------------------------------------------------
     location /uploads {
-        alias /var/www/pc-doctor/server/uploads;
+        alias /var/www/computer-bazaar/server/uploads;
         expires 30d;
         add_header Cache-Control "public, no-transform";
         access_log off;

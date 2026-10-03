@@ -10,9 +10,9 @@ const ensureDefaultAdmin = async () => {
     const count = await User.countDocuments();
     if (count === 0) {
       const defaultAdmin = new User({
-        name: 'Dr. PC Admin',
+        name: 'COMPUTER BAZAAR Admin',
         username: 'admin',
-        email: 'admin@pcdoctor.com',
+        email: 'admin@computerbazaar.com',
         role: 'admin',
         isActive: true
       });
@@ -132,7 +132,7 @@ exports.getDemoCredentials = async (req, res) => {
   return ApiResponse.success(res, {
     username: 'admin',
     password: 'admin123',
-    email: 'admin@pcdoctor.com',
+    email: 'admin@computerbazaar.com',
     role: 'admin'
   });
 };

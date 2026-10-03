@@ -4,7 +4,7 @@ const shopSettingsSchema = new mongoose.Schema(
   {
     shopName: {
       type: String,
-      default: 'PC Doctor',
+      default: 'COMPUTER BAZAAR',
       trim: true
     },
     tagline: {
@@ -26,7 +26,7 @@ const shopSettingsSchema = new mongoose.Schema(
     },
     email: {
       type: String,
-      default: 'support@pcdoctor.local'
+      default: 'support@computerbazaar.local'
     },
     address: {
       type: String,
@@ -58,7 +58,7 @@ const shopSettingsSchema = new mongoose.Schema(
     },
     invoiceFooter: {
       type: String,
-      default: 'Thank you for choosing PC Doctor! Goods once sold can be exchanged within 7 days with invoice.'
+      default: 'Thank you for choosing COMPUTER BAZAAR! Goods once sold can be exchanged within 7 days with invoice.'
     },
     termsAndConditions: {
       type: String,

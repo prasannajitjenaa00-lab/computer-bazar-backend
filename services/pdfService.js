@@ -15,7 +15,7 @@ const generateBillInvoicePDF = (bill, shopSettings = {}) => {
         resolve(pdfData);
       });
 
-      const shopName = shopSettings.shopName || 'PC DOCTOR';
+      const shopName = shopSettings.shopName || 'COMPUTER BAZAAR';
       const tagline = shopSettings.tagline || 'Billing, Inventory & Repair Management';
       const address = shopSettings.address || 'Commercial Hub, City';
       const phone = shopSettings.phone || '+91 98765 43210';
@@ -140,7 +140,7 @@ const generateRepairTokenPDF = (repair, shopSettings = {}) => {
       doc.on('data', buffers.push.bind(buffers));
       doc.on('end', () => resolve(Buffer.concat(buffers)));
 
-      const shopName = shopSettings.shopName || 'PC DOCTOR';
+      const shopName = shopSettings.shopName || 'COMPUTER BAZAAR';
       const phone = shopSettings.phone || '+91 98765 43210';
       const currency = shopSettings.currencySymbol || '₹';
 
@@ -263,7 +263,7 @@ const generateRepairInvoicePDF = (repair, shopSettings = {}) => {
       doc.on('data', buffers.push.bind(buffers));
       doc.on('end', () => resolve(Buffer.concat(buffers)));
 
-      const shopName = shopSettings.shopName || 'PC DOCTOR';
+      const shopName = shopSettings.shopName || 'COMPUTER BAZAAR';
       const currency = shopSettings.currencySymbol || '₹';
       const address = shopSettings.address || 'Commercial Hub, City';
       const phone = shopSettings.phone || '+91 98765 43210';

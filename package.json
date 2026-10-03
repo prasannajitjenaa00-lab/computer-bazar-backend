@@ -1,7 +1,7 @@
 {
-  "name": "pc-doctor-server",
+  "name": "computer-bazaar-server",
   "version": "1.0.0",
-  "description": "Backend API for PC Doctor Repair & POS Management System",
+  "description": "Backend API for COMPUTER BAZAAR Repair & POS Management System",
   "main": "server.js",
   "scripts": {
     "start": "node server.js",
@@ -14,9 +14,9 @@
     "mongodb",
     "pos",
     "repair-management",
-    "pc-doctor"
+    "computer-bazaar"
   ],
-  "author": "PC Doctor",
+  "author": "COMPUTER BAZAAR",
   "license": "ISC",
   "dependencies": {
     "cloudinary": "^2.5.1",
