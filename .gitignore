@@ -6,9 +6,11 @@ yarn-error.log*
 
 # Environment files
 .env
+.env.example
 .env.local
 .env.*.local
 .env.production
+.env.*
 
 # Uploaded files (preserve folder structure)
 uploads/*
