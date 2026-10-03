@@ -26,7 +26,17 @@ const shopSettingsSchema = new mongoose.Schema(
     },
     email: {
       type: String,
-      default: 'support@computerbazaar.local'
+      default: 'contact@dreamonixsolution.com'
+    },
+    website: {
+      type: String,
+      default: 'https://dreamonixsolution.com/',
+      trim: true
+    },
+    companyName: {
+      type: String,
+      default: 'Dreamonix Solution',
+      trim: true
     },
     address: {
       type: String,

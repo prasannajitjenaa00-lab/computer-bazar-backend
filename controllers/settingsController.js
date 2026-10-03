@@ -64,10 +64,14 @@ exports.updateSettings = async (req, res, next) => {
       currencySymbol,
       themeColor,
       upiId,
-      defaultGstRate
+      defaultGstRate,
+      website,
+      companyName
     } = req.body;
 
     if (shopName) settings.shopName = shopName;
+    if (companyName !== undefined) settings.companyName = companyName;
+    if (website !== undefined) settings.website = website;
     if (tagline !== undefined) settings.tagline = tagline;
     if (logo !== undefined) settings.logo = logo;
     if (phone) settings.phone = phone;
