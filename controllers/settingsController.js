@@ -14,7 +14,9 @@ exports.getSettings = async (req, res, next) => {
         shopName: 'COMPUTER BAZAAR',
         tagline: 'Computer, Laptop, CCTV & Networking Solutions',
         phone: '+91 98765 43210',
-        email: 'contact@computerbazaar.com',
+        email: 'contact@dreamonixsolution.com',
+        companyName: 'Dreamonix Solution',
+        website: 'https://dreamonixsolution.com/',
         address: '104 Computer Plaza, Commercial Hub',
         city: 'Metro City',
         state: 'State',
@@ -26,6 +28,21 @@ exports.getSettings = async (req, res, next) => {
         currencySymbol: '₹',
         themeColor: '#2563eb'
       });
+    } else if (settings.shopName && (/pc doctor/i.test(settings.shopName) || /pcdoctor/i.test(settings.email || ''))) {
+      // Auto-migrate legacy branding in database safely
+      if (/pc doctor/i.test(settings.shopName)) {
+        settings.shopName = 'COMPUTER BAZAAR';
+      }
+      if (settings.email && /pcdoctor/i.test(settings.email)) {
+        settings.email = 'contact@dreamonixsolution.com';
+      }
+      if (!settings.companyName || /pc doctor/i.test(settings.companyName)) {
+        settings.companyName = 'Dreamonix Solution';
+      }
+      if (!settings.website || /pcdoctor/i.test(settings.website)) {
+        settings.website = 'https://dreamonixsolution.com/';
+      }
+      await settings.save();
     }
 
     return ApiResponse.success(res, settings, 'Shop settings retrieved');

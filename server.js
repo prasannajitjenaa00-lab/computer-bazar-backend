@@ -105,7 +105,7 @@ app.use('*', (req, res) => {
 // Centralized Error Handling Middleware
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5002;
 
 const server = app.listen(PORT, () => {
   console.log(`=======================================================`);

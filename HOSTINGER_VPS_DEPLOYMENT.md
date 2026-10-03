@@ -1,199 +1,144 @@
-# 🚀 Complete Deployment Guide: Hostinger VPS (Ubuntu 22.04 / 24.04)
+# 🚀 Computer Bazaar VPS Deployment & Maintenance Guide
 
-This step-by-step guide walks you through deploying **COMPUTER BAZAAR** on a **Hostinger VPS** using **Node.js, Nginx, PM2, and SSL (Certbot)**.
-
----
-
-## 📋 Prerequisites
-- A **Hostinger VPS** running **Ubuntu 22.04 LTS** or **Ubuntu 24.04 LTS**.
-- Your VPS **IP address** and **root password** (found in Hostinger hPanel).
-- (Optional but recommended) A **Domain name** pointed to your VPS IP via an `A` record (e.g., `yourdomain.com` -> `123.45.67.89`).
-- A **MongoDB Atlas** cluster connection string (or install local MongoDB on the VPS).
+Complete guide for deploying and maintaining **COMPUTER BAZAAR** on your Ubuntu VPS alongside other projects (PC Doctor on `5000`, WorkDreamPulse on `5001`).
 
 ---
 
-## Step 1: Connect to Your VPS via SSH
-Open PowerShell or Terminal on your computer and connect to your VPS:
-```bash
-ssh root@YOUR_VPS_IP
-```
-Enter your VPS root password when prompted.
+## 📋 Architecture & Port Configuration
+
+| Application | Domain | Port | PM2 Process Name | VPS Directory |
+| :--- | :--- | :--- | :--- | :--- |
+| **PC Doctor** | `pcdoctor...` | `5000` | `pcdoctor-backend` | `/var/www/pcdoctor/...` |
+| **WorkDreamPulse** | `...` | `5001` | `workdreampulse-backend` | `/var/www/workdreampulse/...` |
+| **Computer Bazaar (Backend)** | `computerbazaar.dreambill.tech/api` | `5002` | `computerbazaar-backend` | `/var/www/computerbazaar/backend/computer-bazar-backend` |
+| **Computer Bazaar (Frontend)** | `computerbazaar.dreambill.tech` | `80/443` (Nginx Static) | N/A (Nginx Serves `dist`) | `/var/www/computerbazaar/frontend/compute-bazar-frontend` |
 
 ---
 
-## Step 2: Update Server & Install Required Software
-Run the following commands on your VPS:
+## 🛠️ Step-by-Step VPS Deployment Instructions
+
+### 1. Update Frontend Code and Rebuild
+
+SSH into your VPS and pull the latest `main` branch for the frontend:
 
 ```bash
-# 1. Update system packages
-sudo apt update && sudo apt upgrade -y
-
-# 2. Install essential tools
-sudo apt install -y curl git nginx ufw build-essential
-
-# 3. Install Node.js 20.x (LTS) & npm
-curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
-sudo apt install -y nodejs
-
-# Verify installations
-node -v   # Should show v20.x.x
-npm -v    # Should show 10.x.x
-
-# 4. Install PM2 globally (Process Manager)
-sudo npm install -g pm2
-```
-
----
-
-## Step 3: Configure UFW Firewall
-Secure your VPS by allowing only SSH, HTTP, and HTTPS traffic:
-```bash
-sudo ufw allow OpenSSH
-sudo ufw allow 'Nginx Full'
-sudo ufw --force enable
-sudo ufw status
-```
-
----
-
-## Step 4: Clone the COMPUTER BAZAAR Project
-We recommend putting web applications in `/var/www/`:
-
-```bash
-# Navigate to web directory
-cd /var/www
-
-# Clone your repository
-git clone <YOUR_GIT_REPOSITORY_URL> computer-bazaar
-
-# Enter project directory
-cd computer-bazaar
-
-# Install all dependencies (root, server, and client)
-npm run install:all
-```
-
----
-
-## Step 5: Configure Environment Variables (.env)
-Create the production environment file for the backend:
-
-```bash
-nano server/.env
-```
-
-Paste your production variables into `server/.env`:
-```env
-PORT=5000
-NODE_ENV=production
-
-# MongoDB Atlas connection string (or mongodb://127.0.0.1:27017/computer_bazaar if installed locally)
-MONGODB_URI=mongodb+srv://<username>:<password>@cluster0.mongodb.net/computer_bazaar?retryWrites=true&w=majority
-
-# Your domain or VPS IP
-CLIENT_URL=https://yourdomain.com
-
-# Optional Cloudinary keys (leave empty if using local server/uploads/)
-CLOUDINARY_CLOUD_NAME=
-CLOUDINARY_API_KEY=
-CLOUDINARY_API_SECRET=
-```
-Press `CTRL + O`, then `Enter` to save, and `CTRL + X` to exit `nano`.
-
----
-
-## Step 6: Build the Frontend
-Compile the React application for production:
-```bash
-npm run build
-```
-This generates the optimized production bundle inside `client/dist/`.
-
----
-
-## Step 7: Start the Server with PM2
-Launch the backend using the pre-configured `ecosystem.config.js`:
-
-```bash
-# Start the app in production mode
-pm2 start ecosystem.config.js --env production
-
-# Check status
-pm2 status
-
-# Save current PM2 processes to auto-start on reboot
-pm2 save
-
-# Generate and register the system startup script
-pm2 startup
-```
-*(Copy and paste the command `pm2 startup` outputs if prompted).*
-
----
-
-## Step 8: Configure Nginx Web Server
-Copy the provided Nginx configuration template into Nginx sites:
-
-```bash
-sudo cp /var/www/computer-bazaar/nginx.conf.example /etc/nginx/sites-available/computer-bazaar
-```
-
-Edit the file to replace `yourdomain.com` with your actual domain name or VPS IP:
-```bash
-sudo nano /etc/nginx/sites-available/computer-bazaar
-```
-Change line 12:
-```nginx
-server_name yourdomain.com www.yourdomain.com;
-```
-*(If you do not have a domain yet, replace with your VPS public IP: `server_name YOUR_VPS_IP;`).*
-
-Enable the site and restart Nginx:
-```bash
-# Enable site configuration
-sudo ln -s /etc/nginx/sites-available/computer-bazaar /etc/nginx/sites-enabled/
-
-# Remove default Nginx welcome page
-sudo rm -f /etc/nginx/sites-enabled/default
-
-# Test Nginx syntax
-sudo nginx -t
-
-# Restart Nginx
-sudo systemctl restart nginx
-```
-
----
-
-## Step 9: Install Free SSL Certificate (HTTPS)
-If you have a domain pointed to your VPS IP, secure it with a free Let's Encrypt SSL certificate:
-
-```bash
-sudo apt install -y certbot python3-certbot-nginx
-sudo certbot --nginx -d yourdomain.com -d www.yourdomain.com
-```
-Follow the on-screen prompts (enter your email and agree to terms). Certbot will automatically configure HTTPS in Nginx and set up auto-renewal!
-
----
-
-## 🔄 How to Deploy Updates in the Future
-Whenever you push new code to GitHub, update your VPS with these 4 commands:
-
-```bash
-cd /var/www/computer-bazaar
+cd /var/www/computerbazaar/frontend/compute-bazar-frontend
 git pull origin main
+npm install
 npm run build
-pm2 reload computer-bazaar
+```
+
+> The built files will be generated in `/var/www/computerbazaar/frontend/compute-bazar-frontend/dist`.
+
+---
+
+### 2. Update Backend Code and Environment
+
+Navigate to the backend directory, pull changes, ensure `.env` is configured for port 5002, and restart PM2:
+
+```bash
+cd /var/www/computerbazaar/backend/computer-bazar-backend
+git pull origin main
+npm install
+```
+
+Verify/edit `/var/www/computerbazaar/backend/computer-bazar-backend/.env`:
+```env
+PORT=5002
+NODE_ENV=production
+MONGODB_URI=mongodb+srv://sntavels_db_user:reqSHlu6I4foFO5g@cluster0.bdzeeev.mongodb.net/computer_bazaar?retryWrites=true&w=majority
+CLIENT_URL=https://computerbazaar.dreambill.tech
+```
+
+Restart or start the backend process with PM2:
+```bash
+# If process already exists:
+pm2 restart computerbazaar-backend
+
+# If process is not yet registered:
+pm2 start server.js --name "computerbazaar-backend" --env production
+pm2 save
+```
+
+Verify backend health:
+```bash
+curl http://127.0.0.1:5002/api/health
+```
+*(Should return status `online` and system `COMPUTER BAZAAR`)*
+
+---
+
+### 3. Verify Nginx Configuration for `computerbazaar.dreambill.tech`
+
+Check your Nginx site configuration in `/etc/nginx/sites-available/computerbazaar`:
+
+```nginx
+server {
+    server_name computerbazaar.dreambill.tech;
+
+    client_max_body_size 25M;
+
+    # 1. React SPA Frontend
+    location / {
+        root /var/www/computerbazaar/frontend/compute-bazar-frontend/dist;
+        index index.html;
+        try_files $uri $uri/ /index.html;
+
+        location ~* \.(?:ico|css|js|gif|jpe?g|png|woff2?|eot|ttf|svg|webp)$ {
+            expires 1y;
+            add_header Cache-Control "public, max-age=31536000, immutable";
+            access_log off;
+        }
+    }
+
+    # 2. Express Backend API Proxy (Port 5002)
+    location /api {
+        proxy_pass http://127.0.0.1:5002;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_cache_bypass $http_upgrade;
+        proxy_read_timeout 60s;
+        proxy_connect_timeout 60s;
+    }
+
+    # 3. Uploads Static Directory
+    location /uploads {
+        alias /var/www/computerbazaar/backend/computer-bazar-backend/uploads;
+        expires 30d;
+        add_header Cache-Control "public, no-transform";
+        access_log off;
+    }
+}
+```
+
+Test and reload Nginx:
+```bash
+sudo nginx -t
+sudo systemctl reload nginx
 ```
 
 ---
 
-## 🛠️ Helpful Troubleshooting Commands
-| Task | Command |
-| :--- | :--- |
-| View live backend logs | `pm2 logs computer-bazaar` |
-| Restart backend server | `pm2 restart computer-bazaar` |
-| View CPU / RAM usage | `pm2 monit` |
-| Test Nginx config | `sudo nginx -t` |
-| View Nginx error logs | `sudo tail -f /var/log/nginx/error.log` |
-| Check API health | `curl http://localhost:5000/api/health` |
+### 4. SSL Certificate (HTTPS)
+
+If SSL is not yet configured for `computerbazaar.dreambill.tech`:
+```bash
+sudo certbot --nginx -d computerbazaar.dreambill.tech
+```
+
+---
+
+## 🔄 Quick Update Command (Future Deployments)
+
+```bash
+# Update Frontend
+cd /var/www/computerbazaar/frontend/compute-bazar-frontend && git pull origin main && npm run build
+
+# Update Backend
+cd /var/www/computerbazaar/backend/computer-bazar-backend && git pull origin main && pm2 restart computerbazaar-backend
+```

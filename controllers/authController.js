@@ -19,6 +19,24 @@ const ensureDefaultAdmin = async () => {
       defaultAdmin.setPassword('admin123');
       await defaultAdmin.save();
       console.log('[Auth] Default Administrator created (Username: admin | Password: admin123)');
+    } else {
+      // Migrate legacy admin user names/emails if present in existing database
+      const legacyAdmin = await User.findOne({
+        $or: [
+          { name: /pc doctor/i },
+          { email: /pcdoctor/i }
+        ]
+      });
+      if (legacyAdmin) {
+        if (/pc doctor/i.test(legacyAdmin.name)) {
+          legacyAdmin.name = 'COMPUTER BAZAAR Admin';
+        }
+        if (/pcdoctor/i.test(legacyAdmin.email)) {
+          legacyAdmin.email = 'admin@computerbazaar.com';
+        }
+        await legacyAdmin.save();
+        console.log('[Auth] Migrated legacy administrator branding to COMPUTER BAZAAR Admin');
+      }
     }
   } catch (error) {
     console.error('[Auth Warning] Could not check or seed default admin:', error.message);

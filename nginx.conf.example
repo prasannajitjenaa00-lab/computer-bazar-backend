@@ -1,15 +1,14 @@
 # ==============================================================================
 # COMPUTER BAZAAR - Nginx Configuration Template for Hostinger VPS (Ubuntu/Debian)
-# Place this file in: /etc/nginx/sites-available/computer-bazaar
-# Then link it to:    /etc/nginx/sites-enabled/computer-bazaar
+# Place this file in: /etc/nginx/sites-available/computerbazaar
+# Then link it to:    /etc/nginx/sites-enabled/computerbazaar
 # ==============================================================================
 
 server {
     listen 80;
     listen [::]:80;
     
-    # Replace with your domain name or VPS public IP
-    server_name yourdomain.com www.yourdomain.com;
+    server_name computerbazaar.dreambill.tech;
 
     # Maximum upload size for device condition photos and shop logos
     client_max_body_size 25M;
@@ -25,7 +24,7 @@ server {
     # 1. React SPA Frontend Static Files
     # --------------------------------------------------------------------------
     location / {
-        root /var/www/computer-bazaar/client/dist;
+        root /var/www/computerbazaar/frontend/compute-bazar-frontend/dist;
         index index.html;
         # Support React Router HTML5 History Mode
         try_files $uri $uri/ /index.html;
@@ -39,10 +38,10 @@ server {
     }
 
     # --------------------------------------------------------------------------
-    # 2. Node.js Express Backend API Proxy
+    # 2. Node.js Express Backend API Proxy (Computer Bazaar Backend Port 5002)
     # --------------------------------------------------------------------------
     location /api {
-        proxy_pass http://127.0.0.1:5000;
+        proxy_pass http://127.0.0.1:5002;
         proxy_http_version 1.1;
         proxy_set_header Upgrade $http_upgrade;
         proxy_set_header Connection 'upgrade';
@@ -59,7 +58,7 @@ server {
     # 3. Direct Static Serving for Uploaded Photos and Shop Logos
     # --------------------------------------------------------------------------
     location /uploads {
-        alias /var/www/computer-bazaar/server/uploads;
+        alias /var/www/computerbazaar/backend/computer-bazar-backend/uploads;
         expires 30d;
         add_header Cache-Control "public, no-transform";
         access_log off;
